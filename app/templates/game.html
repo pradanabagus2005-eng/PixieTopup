@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Up {{ game_name }} - PixeTopup</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        :root {
+            --primary: #E8272A;
+            --primary-dark: #b81c1f;
+            --primary-light: #ff5558;
+            --accent: #FF8C00;
+            --surface: #FFFFFF;
+            --surface-alt: #F7F8FA;
+            --border: #EDEFF2;
+            --text-main: #1A1A2E;
+            --text-secondary: #6B7280;
+            --text-muted: #9CA3AF;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.07);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            background: var(--surface-alt);
+            font-family: 'Nunito', sans-serif;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        /* ===== NAVBAR ===== */
+        .site-nav {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+        }
+        .site-nav .inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 62px;
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 6px 14px 6px 10px;
+            border-radius: 8px;
+            border: 1.5px solid var(--border);
+            transition: all 0.2s;
+        }
+        .back-btn:hover { background: var(--surface-alt); color: var(--text-main); }
+        .back-btn .arrow { font-size: 1rem; }
+        .brand-mini {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+        .brand-mini span { color: var(--primary); }
+
+        /* ===== GAME HERO ===== */
+        .game-hero {
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 60%, #0F3460 100%);
+            padding: 28px 0 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .game-hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .game-hero-inner {
+            position: relative;
+            z-index: 1;
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+        .game-hero-icon {
+            width: 68px;
+            height: 68px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            flex-shrink: 0;
+            border: 2px solid rgba(255,255,255,0.12);
+            overflow: hidden;
+        }
+        .game-hero-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .game-hero-label {
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.45);
+            margin-bottom: 4px;
+        }
+        .game-hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.9rem;
+            color: #fff;
+            letter-spacing: 1px;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+        .game-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(232,39,42,0.2);
+            border: 1px solid rgba(232,39,42,0.4);
+            color: #ff7b7d;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 100px;
+        }
+        .game-hero-divider {
+            height: 24px;
+            background: linear-gradient(to bottom, #0F3460, var(--surface-alt));
+        }
+
+        /* ===== LAYOUT ===== */
+        .page-layout {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 28px 16px 60px;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 24px;
+            align-items: start;
+        }
+        @media (max-width: 860px) {
+            .page-layout { grid-template-columns: 1fr; }
+            .sidebar-col { order: -1; }
+        }
+
+        /* ===== STEP CARD ===== */
+        .step-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+        .step-num {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), #c0392b);
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+        .step-title {
+            font-size: 1rem;
+            font-weight: 800;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        /* ===== INPUT FIELDS ===== */
+        .form-control-custom {
+            width: 100%;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 0.92rem;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            color: var(--text-main);
+            background: var(--surface);
+            transition: all 0.2s;
+            outline: none;
+        }
+        .form-control-custom:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(232,39,42,0.08);
+        }
+        .form-control-custom::placeholder { color: var(--text-muted); font-weight: 500; }
+        .field-hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-top: 7px;
+        }
+        .id-row { display: grid; grid-template-columns: 1fr 0.55fr; gap: 10px; }
+
+        /* ===== PRODUCT TABS ===== */
+        .tab-group {
+            display: flex;
+            gap: 4px;
+            background: var(--surface-alt);
+            padding: 4px;
+            border-radius: 10px;
+            margin-bottom: 18px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            background: transparent;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background: var(--surface);
+            color: var(--primary);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* ===== PRODUCT GRID ===== */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+        }
+        .product-card {
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--surface);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .product-card:hover {
+            border-color: var(--primary);
+            background: #fff5f5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(232,39,42,0.1);
+        }
+        .product-card.active {
+            border-color: var(--primary);
+            background: #fff0f0;
+            box-shadow: 0 0 0 3px rgba(232,39,42,0.12);
+        }
+        .product-card.active::before {
+            content: '✓';
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            width: 18px;
+            height: 18px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            font-size: 0.65rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 18px;
+        }
+        .product-name {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 7px;
+            line-height: 1.3;
+        }
+        .product-price {
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        /* ===== PAYMENT ===== */
+        .payment-section-label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin: 18px 0 10px;
+        }
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 8px;
+        }
+        .payment-card {
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--surface);
+            padding: 12px 10px 9px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0;
+        }
+        .payment-card:hover { border-color: #f0a0a0; background: #fffafa; }
+        .payment-card.active {
+            border-color: var(--primary);
+            background: #fff0f0;
+            box-shadow: 0 0 0 3px rgba(232,39,42,0.1);
+        }
+        .payment-logo {
+            height: 20px;
+            max-width: 100%;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+        .payment-name {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        .payment-card.active .payment-name { color: var(--primary); }
+        .sidebar-col {
+            position: sticky;
+            top: 82px;
+            height: fit-content;
+        }
+
+        /* ===== SIDEBAR / ORDER SUMMARY ===== */
+        .order-card {
+            background: var(--surface);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+        .order-card-header {
+            padding: 18px 20px 14px;
+            border-bottom: 1px solid var(--border);
+        }
+        .order-card-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            margin: 0;
+        }
+        .order-card-body {
+            padding: 18px 20px;
+        }
+        .order-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+        .order-row .label { color: var(--text-secondary); font-weight: 600; }
+        .order-row .value { font-weight: 800; color: var(--text-main); }
+        .order-total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0 0;
+            border-top: 1.5px dashed var(--border);
+            margin-top: 8px;
+        }
+        .order-total-label { font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); }
+        .order-total-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            color: var(--primary);
+            letter-spacing: 0.5px;
+            line-height: 1;
+        }
+        .order-card-footer { padding: 0 20px 20px; }
+
+        .btn-beli {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, #c0392b 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(232,39,42,0.3);
+        }
+        .btn-beli:hover {
+            background: linear-gradient(135deg, #c0392b 0%, #9b2226 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(232,39,42,0.4);
+        }
+        .btn-beli:disabled {
+            background: linear-gradient(135deg, #ccc, #bbb);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .btn-beli-note {
+            text-align: center;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        .btn-beli-note strong { color: var(--text-secondary); }
+
+        /* ===== SKELETON LOADING ===== */
+        .skeleton-loading {
+            position: relative;
+            overflow: hidden;
+            background-color: var(--border);
+            color: transparent !important;
+            border-radius: 4px;
+            display: inline-block;
+            min-width: 80px;
+        }
+        .skeleton-loading::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+            transform: translateX(-100%);
+            background-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.5) 20%, rgba(255, 255, 255, 0) 60%, rgba(255, 255, 255, 0));
+            animation: shimmer 1.5s infinite;
+        }
+        @keyframes shimmer {
+            100% { transform: translateX(100%); }
+        }
+
+        /* ===== SECURITY BADGES ===== */
+        .security-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border);
+        }
+        .sec-badge {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+        .sec-icon { font-size: 0.9rem; }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-products {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 576px) {
+            .product-grid { grid-template-columns: repeat(2, 1fr); }
+            .payment-grid { grid-template-columns: repeat(2, 1fr); }
+            .id-row { grid-template-columns: 1fr; }
+        }
+
+        /* ===== WHATSAPP FLOATING BUTTON ===== */
+        .wa-float {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            background-color: #25D366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 35px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .wa-float:hover {
+            background-color: #128C7E;
+            transform: translateY(-5px) scale(1.05);
+            color: #FFF;
+            box-shadow: 0px 6px 20px rgba(37, 211, 102, 0.4);
+        }
+
+        /* ===== FOOTER ===== */
+.site-footer {
+    background: #1A1A2E;
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 30px 20px 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-top: 40px;
+    width: 100%;
+}
+.site-footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
+.site-footer a:hover { color: var(--primary-light); }
+    </style>
+</head>
+<body>
+
+<nav class="site-nav">
+    <div class="inner">
+        <a href="/" class="back-btn">
+            <span class="arrow"><i class="fa-solid fa-arrow-left"></i></span>
+            <span>Beranda</span>
+        </a>
+        <a href="/" class="brand-mini">PIXIE<span>TOPUP</span></a>
+    </div>
+</nav>
+
+<div class="game-hero" style="background: linear-gradient(rgba(26, 26, 46, 0.85), rgba(22, 33, 62, 0.95)), url('/static/img/banners/{{ game_name.lower().replace(' ', '-') }}.jpg') center/cover no-repeat;">
+    <div class="game-hero-inner">
+        <div class="game-hero-icon">
+            <img
+                src="https://img.icons8.com/color/96/{{ game_name.lower().replace(' ', '-') }}.png"
+                onerror="this.src='https://ui-avatars.com/api/?name={{ game_name.replace(' ', '+') }}&background=E8272A&color=fff&size=96&font-size=0.4&bold=true'"
+                alt="{{ game_name }}"
+            >
+        </div>
+        <div class="game-hero-info">
+            <div class="game-hero-label">Top Up</div>
+            <div class="game-hero-title">{{ game_name }}</div>
+            <span class="game-hero-badge"><i class="fa-solid fa-bolt"></i> Proses Otomatis</span>
+        </div>
+    </div>
+</div>
+<div class="game-hero-divider"></div>
+
+<div class="page-layout">
+
+    <div class="main-col">
+
+        {% set game_upper = game_name | upper %}
+        {% set is_pulsa = ('TELKOMSEL' in game_upper or 'INDOSAT' in game_upper or 'AXIS' in game_upper or 'SMARTFREN' in game_upper or 'TRI' in game_upper or 'XL' in game_upper or 'BY.U' in game_upper) %}
+        {% set is_listrik = ('PLN' in game_upper or 'TOKEN' in game_upper) %}
+
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-num">1</div>
+                <h2 class="step-title">
+                    {% if is_pulsa %}Masukkan Nomor HP
+                    {% elif is_listrik %}Masukkan ID Pelanggan / No. Meter
+                    {% else %}Masukkan User ID{% endif %}
+                </h2>
+            </div>
+
+            {% if game_name == 'Mobile Legends' %}
+                <div class="id-row">
+                    <input type="text" class="form-control-custom" id="userId" placeholder="User ID">
+                    <input type="text" class="form-control-custom" id="zoneId" placeholder="Zone ID">
+                </div>
+                <p class="field-hint"><i class="fa-solid fa-circle-info text-primary"></i> Contoh: 123456789 (User ID) dan 1234 (Zone ID). Cek di profil game.</p>
+            {% elif 'Genshin Impact' in game_name %}
+                <div class="id-row" style="grid-template-columns: 1fr 1fr;">
+                    <select class="form-control-custom" id="serverId" style="appearance: auto; cursor: pointer;">
+                        <option value="" disabled selected>Pilih Server</option>
+                        <option value="001">Asia Server (001)</option>
+                        <option value="002">America Server (002)</option>
+                        <option value="003">Europe Server (003)</option>
+                        <option value="004">TW, HK, MO Server (004)</option>
+                    </select>
+                    <input type="text" class="form-control-custom" id="userId" placeholder="Masukkan UID">
+                </div>
+                <p class="field-hint"><i class="fa-solid fa-circle-info text-primary"></i> Contoh: Pilih Asia Server dan masukkan UID 012345678.</p>
+            {% else %}
+                <input type="text" class="form-control-custom" id="userId" placeholder="{% if is_pulsa %}Contoh: 081234567890{% else %}Contoh: 123456789{% endif %}">
+                <p class="field-hint"><i class="fa-solid fa-circle-info text-primary"></i> 
+                    {% if is_pulsa %}Pastikan nomor HP yang dimasukkan sudah benar dan aktif.
+                    {% elif is_listrik %}Pastikan ID Pelanggan / Nomor Meter PLN sudah benar.
+                    {% else %}Pastikan ID yang dimasukkan sudah benar sesuai instruksi game.{% endif %}
+                </p>
+            {% endif %}
+        </div>
+
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-num">2</div>
+                <h2 class="step-title">Pilih Nominal</h2>
+            </div>
+
+            {% if products|length == 0 %}
+                <div class="empty-products"><i class="fa-solid fa-gamepad" style="font-size: 2rem; display: block; margin-bottom: 10px; color: var(--text-muted);"></i> Produk belum tersedia di database.</div>
+            {% else %}
+                
+                {% if is_pulsa %}
+                    <div class="tab-group">
+                        <button class="tab-btn active" onclick="switchTab(this, 'tab-regular')"><i class="fa-solid fa-mobile-screen"></i> Pulsa</button>
+                        <button class="tab-btn" onclick="switchTab(this, 'tab-member')"><i class="fa-solid fa-wifi"></i> Paket Data</button>
+                    </div>
+                {% elif is_listrik %}
+                    {% else %}
+                    <div class="tab-group">
+                        <button class="tab-btn active" onclick="switchTab(this, 'tab-regular')"><i class="fa-regular fa-gem"></i> Top Up Reguler</button>
+                        <button class="tab-btn" onclick="switchTab(this, 'tab-member')"><i class="fa-solid fa-star"></i> Pass & Bundle</button>
+                    </div>
+                {% endif %}
+
+                <div class="tab-content active" id="tab-regular">
+                    <div class="product-grid">
+                        {% set ns_reg = namespace(ada_reg=false) %}
+                        {% for p in products %}
+                            {% set nama = p.item_name | lower %}
+                            {% set tampil_di_tab1 = false %}
+                            
+                            {% if is_pulsa %}
+                                {% if not ('data' in nama or 'internet' in nama or 'gb' in nama or 'hari' in nama or 'freedom' in nama or 'kuota' in nama or 'combo' in nama) %}
+                                    {% set tampil_di_tab1 = true %}
+                                {% endif %}
+                            {% elif is_listrik %}
+                                {% set tampil_di_tab1 = true %}
+                            {% else %}
+                                {% if not ('pass' in nama or 'member' in nama or 'bundle' in nama or 'starlight' in nama or 'twilight' in nama) %}
+                                    {% set tampil_di_tab1 = true %}
+                                {% endif %}
+                            {% endif %}
+
+                            {% if tampil_di_tab1 %}
+                                {% set ns_reg.ada_reg = true %}
+                                <div class="product-card" onclick="pilihProduk(this, '{{ p.id }}', '{{ p.harga_jual_dinamis }}')">
+                                    <div class="product-name">{{ p.item_name }}</div>
+                                    <div class="product-price">Rp <span class="format-rupiah">{{ p.harga_jual_dinamis }}</span></div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        {% if not ns_reg.ada_reg %}
+                            <div class="col-12 empty-products">Tidak ada produk tersedia.</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if not is_listrik %}
+                <div class="tab-content" id="tab-member">
+                    <div class="product-grid">
+                        {% set ns_mem = namespace(ada_mem=false) %}
+                        {% for p in products %}
+                            {% set nama = p.item_name | lower %}
+                            {% set tampil_di_tab2 = false %}
+                            
+                            {% if is_pulsa %}
+                                {% if 'data' in nama or 'internet' in nama or 'gb' in nama or 'hari' in nama or 'freedom' in nama or 'kuota' in nama or 'combo' in nama %}
+                                    {% set tampil_di_tab2 = true %}
+                                {% endif %}
+                            {% else %}
+                                {% if 'pass' in nama or 'member' in nama or 'bundle' in nama or 'starlight' in nama or 'twilight' in nama %}
+                                    {% set tampil_di_tab2 = true %}
+                                {% endif %}
+                            {% endif %}
+
+                            {% if tampil_di_tab2 %}
+                                {% set ns_mem.ada_mem = true %}
+                                <div class="product-card" onclick="pilihProduk(this, '{{ p.id }}', '{{ p.harga_jual_dinamis }}')">
+                                    <div class="product-name">{{ p.item_name }}</div>
+                                    <div class="product-price">Rp <span class="format-rupiah">{{ p.harga_jual_dinamis }}</span></div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        {% if not ns_mem.ada_mem %}
+                            <div class="empty-products">Tidak ada produk tersedia.</div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+
+            {% endif %}
+        </div>
+
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-num">3</div>
+                <h2 class="step-title">Pilih Pembayaran</h2>
+            </div>
+
+            <div class="payment-section-label">E-Wallet & QRIS</div>
+            <div class="payment-grid">
+                <div class="payment-card" onclick="pilihPembayaran(this, 'NQ')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg" class="payment-logo" alt="QRIS" onerror="this.style.display='none'">
+                    <p class="payment-name">QRIS</p>
+                </div>
+                
+                <div class="payment-card" onclick="pilihPembayaran(this, 'NQ')"> 
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Gopay_logo.svg" class="payment-logo" alt="GoPay" style="height:17px" onerror="this.style.display='none'">
+                    <p class="payment-name">GoPay</p>
+                </div>
+
+                <div class="payment-card" onclick="pilihPembayaran(this, 'OV')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo_ovo_purple.svg" class="payment-logo" alt="OVO" onerror="this.style.display='none'">
+                    <p class="payment-name">OVO</p>
+                </div>
+
+                <div class="payment-card" onclick="pilihPembayaran(this, 'DA')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" class="payment-logo" alt="DANA" onerror="this.style.display='none'">
+                    <p class="payment-name">DANA</p>
+                </div>
+
+                <div class="payment-card" onclick="pilihPembayaran(this, 'SP')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg" class="payment-logo" alt="ShopeePay" onerror="this.style.display='none'">
+                    <p class="payment-name">ShopeePay</p>
+                </div>
+            </div>
+            
+            <div class="payment-section-label">Virtual Account Bank</div>
+            <div class="payment-grid">
+                <div class="payment-card" onclick="pilihPembayaran(this, 'BC')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg" class="payment-logo" alt="BCA" onerror="this.style.display='none'">
+                    <p class="payment-name">BCA VA</p>
+                </div>
+                <div class="payment-card" onclick="pilihPembayaran(this, 'M2')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/ad/Bank_Mandiri_logo_2016.svg" class="payment-logo" alt="Mandiri" style="height:17px" onerror="this.style.display='none'">
+                    <p class="payment-name">Mandiri VA</p>
+                </div>
+                <div class="payment-card" onclick="pilihPembayaran(this, 'BR')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2e/BRI_2020.svg" class="payment-logo" alt="BRI" onerror="this.style.display='none'">
+                    <p class="payment-name">BRI VA</p>
+                </div>
+                <div class="payment-card" onclick="pilihPembayaran(this, 'I1')">
+                    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Bank_Negara_Indonesia_logo_(2004).svg" class="payment-logo" alt="BNI" onerror="this.style.display='none'">
+                    <p class="payment-name">BNI VA</p>
+                </div>
+            </div>
+
+            <div class="payment-section-label">Minimarket</div>
+            <div class="payment-grid">
+                <div class="payment-card" onclick="pilihPembayaran(this, 'FT')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Alfamart_logo.svg" class="payment-logo" alt="Alfamart" onerror="this.style.display='none'">
+                    <p class="payment-name">Alfamart</p>
+                </div>
+                <div class="payment-card" onclick="pilihPembayaran(this, 'IR')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/9d/Logo_Indomaret.png" class="payment-logo" alt="Indomaret" style="height:17px" onerror="this.style.display='none'">
+                    <p class="payment-name">Indomaret</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="sidebar-col">
+        <div class="order-card">
+            <div class="order-card-header">
+                <p class="order-card-title"><i class="fa-solid fa-receipt" style="color: var(--text-muted); margin-right: 5px;"></i> Ringkasan Pesanan</p>
+            </div>
+            <div class="order-card-body">
+                <div class="order-row">
+                    <span class="label">Game</span>
+                    <span class="value">{{ game_name }}</span>
+                </div>
+                <div class="order-row">
+                    <span class="label">Item</span>
+                    <span class="value" id="selectedItemName">—</span>
+                </div>
+                <div class="order-row">
+                    <span class="label">Pembayaran</span>
+                    <span class="value" id="selectedPaymentName">—</span>
+                </div>
+                <div class="order-total-row">
+                    <span class="order-total-label">TOTAL</span>
+                    <span class="order-total-value" id="totalHarga">Rp 0</span>
+                </div>
+            </div>
+            <div class="order-card-footer">
+                <button class="btn-beli" id="btnBeli" onclick="beliSekarang()">Beli Sekarang <i class="fa-solid fa-arrow-right" style="margin-left: 5px;"></i></button>
+                <p class="btn-beli-note"><i class="fa-solid fa-bolt" style="color: var(--accent);"></i> Proses otomatis <strong>&lt;30 detik</strong> setelah bayar</p>
+                <div class="security-row">
+                    <div class="sec-badge"><span class="sec-icon"><i class="fa-solid fa-lock"></i></span> SSL Secure</div>
+                    <div class="sec-badge"><span class="sec-icon"><i class="fa-solid fa-shield-halved"></i></span> Anti-Fraud</div>
+                    <div class="sec-badge"><span class="sec-icon"><i class="fa-solid fa-medal"></i></span> 99.9% Berhasil</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<a href="https://wa.me/6285784566377?text=Halo%20Admin%20PixieTopup,%20saya%20butuh%20bantuan%20terkait%20pesanan%20saya." class="wa-float" target="_blank" rel="noopener noreferrer" title="Chat Customer Service">
+    <i class="fa-brands fa-whatsapp"></i>
+</a>
+
+<footer class="site-footer">
+    <div class="container" style="margin-bottom: 15px; color: rgba(255,255,255,0.7); font-size: 0.85rem;">
+        <p style="margin-bottom: 5px;"><strong style="color: white;">Kontak Bantuan & Support</strong></p>
+        <p style="margin-bottom: 3px;"><i class="fa-solid fa-envelope"></i> Email: pixietopup@gmail.com</p>
+        <p style="margin-bottom: 3px;"><i class="fa-solid fa-phone"></i> Telepon / WA: 085784566377</p>
+        <p style="margin-bottom: 15px;"><i class="fa-solid fa-location-dot"></i> Alamat: Jl. Pahlawan no 124, Jember, Jawa Timur</p>
+    </div>
+    <p>© 2026 <strong style="color:rgba(255,255,255,0.8)">PixeTopup</strong> · Top Up Game Terpercaya &nbsp;|&nbsp; <a href="/cek-pesanan">Cek Pesanan</a></p>
+</footer>
+
+
+<script>
+    let selectedProductId = null;
+    let selectedPaymentMethod = null;
+    let baseHargaProduk = 0; // Menyimpan harga dasar (termasuk untung +1000 jika pulsa)
+    
+    // Cek apakah halaman ini kategori game atau bukan dari Python Jinja2
+    let isGameCategory = {% if is_pulsa or is_listrik %}false{% else %}true{% endif %};
+    let isListrik = {% if is_listrik %}true{% else %}false{% endif %};
+    let isPulsa = {% if is_pulsa %}true{% else %}false{% endif %};
+
+    // Format rupiah on load
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll('.format-rupiah').forEach(el => {
+            let n = parseInt(el.innerText);
+            if(!isNaN(n)) el.innerText = n.toLocaleString('id-ID');
+        });
+    });
+
+    function switchTab(btn, tabId) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(tabId).classList.add('active');
+    }
+
+    function pilihProduk(element, id, harga) {
+        selectedProductId = id;
+        baseHargaProduk = parseInt(harga); 
+        
+        let nama = element.querySelector('.product-name').innerText;
+        document.getElementById('selectedItemName').innerText = nama;
+        
+        document.querySelectorAll('.product-card').forEach(k => k.classList.remove('active'));
+        element.classList.add('active');
+        
+        updateTotalHarga(); // Kalkulasi harga saat klik produk
+    }
+
+    function pilihPembayaran(element, metode) {
+        selectedPaymentMethod = metode;
+        let nama = element.querySelector('.payment-name').innerText;
+        document.getElementById('selectedPaymentName').innerText = nama;
+        
+        document.querySelectorAll('.payment-card').forEach(k => k.classList.remove('active'));
+        element.classList.add('active');
+        
+        updateTotalHarga(); // Kalkulasi harga saat klik metode bayar
+    }
+
+    function updateTotalHarga() {
+        if (baseHargaProduk === 0) return;
+        
+        let finalPrice = baseHargaProduk;
+        
+        // Deteksi secara otomatis apakah item yang diklik adalah paket data
+        let itemName = document.getElementById('selectedItemName').innerText.toLowerCase();
+        let isPaketData = ['data', 'internet', 'gb', 'hari', 'freedom', 'kuota', 'combo'].some(k => itemName.includes(k));
+        
+        // Tentukan apakah produk ini wajib kena margin persentase metode pembayaran (Listrik dihapus dari sini)
+        let kenaMargin = isGameCategory || (isPulsa && isPaketData);
+        
+        // Tambahkan persentase keuntungan HANYA JIKA ini masuk kategori di atas dan metode bayar sudah diklik
+        if (kenaMargin && selectedPaymentMethod) {
+            if (selectedPaymentMethod === 'NQ') {
+                finalPrice = finalPrice + (finalPrice * 0.107);
+            } else if (['OV', 'DA', 'LA'].includes(selectedPaymentMethod)) {
+                finalPrice = finalPrice + (finalPrice * 0.1167);
+            } else if (selectedPaymentMethod === 'SP') {
+                finalPrice = finalPrice + (finalPrice * 0.12);
+            } else if (['BC', 'M2', 'BR', 'I1'].includes(selectedPaymentMethod)) {
+                // Biaya admin Virtual Account (10% + 4000)
+                finalPrice = finalPrice + (finalPrice * 0.10) + 4000;
+            } else {
+                // Metode lainnya (Minimarket, dll)
+                finalPrice = finalPrice + (finalPrice * 0.10) + 2500;
+            }
+        }
+        
+        finalPrice = Math.floor(finalPrice); // Bulatkan angka ke bawah agar rapi
+        document.getElementById('totalHarga').innerText = 'Rp ' + finalPrice.toLocaleString('id-ID');
+    }
+
+    // Fungsi pembantu untuk mematikan / menghidupkan skeleton loading
+    function toggleSkeleton(isActive) {
+        const itemEl = document.getElementById('selectedItemName');
+        const priceEl = document.getElementById('totalHarga');
+        if (isActive) {
+            itemEl.classList.add('skeleton-loading');
+            priceEl.classList.add('skeleton-loading');
+        } else {
+            itemEl.classList.remove('skeleton-loading');
+            priceEl.classList.remove('skeleton-loading');
+        }
+    }
+
+    async function beliSekarang() {
+            if(!selectedProductId) {
+                return Swal.fire({ icon: 'warning', title: 'Belum Lengkap', text: 'Silakan pilih nominal top up terlebih dahulu!' });
+            }
+            
+            let finalTargetId = "";
+            let userIdEl = document.getElementById('userId');
+            let zoneIdEl = document.getElementById('zoneId');
+            let serverIdEl = document.getElementById('serverId'); // Variabel baru
+            
+            if (userIdEl && zoneIdEl) {
+                let uId = userIdEl.value.trim();
+                let zId = zoneIdEl.value.trim();
+                if(!uId || !zId) {
+                    return Swal.fire({ icon: 'warning', title: 'Belum Lengkap', text: 'User ID dan Zone ID harus diisi!' });
+                }
+                finalTargetId = uId + zId;
+            } else if (userIdEl && serverIdEl) {
+                let uId = userIdEl.value.trim();
+                let sId = serverIdEl.value;
+                if(!sId) {
+                    return Swal.fire({ icon: 'warning', title: 'Belum Lengkap', text: 'Silakan pilih Server game terlebih dahulu!' });
+                }
+                if(!uId) {
+                    return Swal.fire({ icon: 'warning', title: 'Belum Lengkap', text: 'Kolom User ID (UID) harus diisi!' });
+                }
+                finalTargetId = sId + uId;
+            } else if (userIdEl) {
+                finalTargetId = userIdEl.value.trim();
+                if(!finalTargetId) {
+                    return Swal.fire({ icon: 'warning', title: 'Belum Lengkap', text: 'Kolom ID tidak boleh kosong!' });
+                }
+            }
+
+            if(!selectedPaymentMethod) {
+                return Swal.fire({ icon: 'warning', title: 'Belum Lengkap', text: 'Silakan pilih metode pembayaran!' });
+            }
+
+            let btn = document.getElementById('btnBeli');
+            let originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Mengecek ID...';
+            btn.disabled = true;
+            
+            // Mengaktifkan Skeleton Loading
+            toggleSkeleton(true);
+
+            try {
+                // ==========================================
+                // TAHAP 1: MENGINTIP NICKNAME KE DIGIFLAZZ
+                // ==========================================
+                let gameNameStr = "{{ game_name }}";
+                let checkRes = await fetch('/api/cek-id', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ game_name: gameNameStr, target_id: finalTargetId })
+                });
+                
+                let checkData = await checkRes.json();
+
+                // Jika ID Ditemukan, Munculkan Pop-up!
+                if (checkData.status === "success") {
+                    toggleSkeleton(false); // Matikan efek sejenak untuk memunculkan popup
+                    
+                    let konfirmasi = await Swal.fire({
+                        title: 'Konfirmasi Nickname',
+                        html: `Apakah benar ini akunmu?<br><br><b style="font-size: 1.5rem; color: #6f42c1;">${checkData.nickname}</b>`,
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, Lanjut Bayar',
+                        cancelButtonText: 'Batal',
+                        confirmButtonColor: '#6f42c1'
+                    });
+
+                    // Jika pembeli klik Batal
+                    if (!konfirmasi.isConfirmed) {
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                        return; // Hentikan proses
+                    }
+                    toggleSkeleton(true); // Hidupkan lagi skeleton jika lanjut
+                } 
+                // Jika ID salah / tidak terdaftar
+                else if (checkData.status === "error") {
+                    toggleSkeleton(false);
+                    Swal.fire({ icon: 'error', title: 'ID Tidak Valid', text: checkData.message });
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    return; // Hentikan proses
+                }
+
+                // ==========================================
+                // TAHAP 2: LANJUT BAYAR KE DUITKU
+                // ==========================================
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Membuat Tagihan...';
+                let response = await fetch('/api/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        product_id: selectedProductId,
+                        target_id: finalTargetId, 
+                        payment_method: selectedPaymentMethod
+                    })
+                });
+
+                let data = await response.json();
+
+                if (data.status === "success") {
+                    window.location.href = data.payment_url;
+                } else {
+                    toggleSkeleton(false);
+                    Swal.fire({ icon: 'error', title: 'Transaksi Gagal', text: data.message });
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                console.error(error);
+                toggleSkeleton(false);
+                Swal.fire({ icon: 'error', title: 'Ups!', text: 'Terjadi kesalahan sistem atau Anda terlalu cepat klik.' });
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+    
+</script>
+
+</body>
+</html>

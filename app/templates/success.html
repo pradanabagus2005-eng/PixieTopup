@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Pembayaran - PixeTopup</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #E8272A;
+            --accent: #FF8C00;
+            --surface: #FFFFFF;
+            --surface-alt: #F7F8FA;
+            --border: #EDEFF2;
+            --text-main: #1A1A2E;
+            --text-secondary: #6B7280;
+            --text-muted: #9CA3AF;
+            --green: #16A34A;
+            --green-bg: #F0FDF4;
+            --green-border: #BBF7D0;
+            --yellow: #D97706;
+            --yellow-bg: #FFFBEB;
+            --yellow-border: #FDE68A;
+            --red: #DC2626;
+            --red-bg: #FEF2F2;
+            --red-border: #FECACA;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            background: var(--surface-alt);
+            font-family: 'Nunito', sans-serif;
+            color: var(--text-main);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== NAVBAR ===== */
+        .site-nav {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+        }
+        .site-nav .inner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 62px;
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .brand-logo {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+        }
+        .brand-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 1.5px;
+            color: var(--text-main);
+        }
+        .brand-name span { color: var(--primary); }
+
+        /* ===== MAIN ===== */
+        .page-main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 16px;
+        }
+
+        .status-container {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        /* ===== STATUS CARD ===== */
+        .status-card {
+            background: var(--surface);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.08), 0 1px 6px rgba(0,0,0,0.04);
+            border: 1px solid var(--border);
+        }
+
+        .status-header {
+            padding: 32px 28px 24px;
+            text-align: center;
+            position: relative;
+        }
+        .status-header.success { background: var(--green-bg); border-bottom: 1px solid var(--green-border); }
+        .status-header.pending { background: var(--yellow-bg); border-bottom: 1px solid var(--yellow-border); }
+        .status-header.failed  { background: var(--red-bg);    border-bottom: 1px solid var(--red-border); }
+
+        .status-icon-wrap {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 2rem;
+        }
+        .success .status-icon-wrap { background: #DCFCE7; border: 2px solid #86EFAC; color: var(--green); }
+        .pending .status-icon-wrap { background: #FEF9C3; border: 2px solid #FDE047; color: var(--yellow); }
+        .failed  .status-icon-wrap { background: #FEE2E2; border: 2px solid #FCA5A5; color: var(--red); }
+
+        .status-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.65rem;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+        .success .status-title { color: var(--green); }
+        .pending .status-title { color: var(--yellow); }
+        .failed  .status-title { color: var(--red); }
+
+        .status-subtitle {
+            font-size: 0.87rem;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+        .success .status-subtitle { color: #166534; }
+        .pending .status-subtitle { color: #92400E; }
+        .failed  .status-subtitle { color: #991B1B; }
+
+        /* ===== DETAIL ROWS ===== */
+        .detail-section {
+            padding: 20px 28px;
+        }
+        .detail-label {
+            font-size: 0.68rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 11px 0;
+            border-bottom: 1px dashed var(--border);
+        }
+        .detail-row:last-child { border-bottom: none; }
+        .detail-row .dk { font-size: 0.83rem; font-weight: 600; color: var(--text-secondary); }
+        .detail-row .dv { font-size: 0.88rem; font-weight: 800; color: var(--text-main); }
+
+        .order-id-box {
+            background: #F7F8FA;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .order-id-label { font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .order-id-value { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 2px; color: var(--text-main); }
+
+        /* ===== CTA ===== */
+        .cta-section {
+            padding: 0 28px 28px;
+        }
+        .btn-home {
+            display: block;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary) 0%, #c0392b 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-weight: 800;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(232,39,42,0.3);
+        }
+        .btn-home:hover {
+            background: linear-gradient(135deg, #c0392b 0%, #9b2226 100%);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(232,39,42,0.35);
+        }
+        .btn-cek {
+            display: block;
+            text-align: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.82rem;
+            margin-top: 12px;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1.5px solid var(--border);
+            transition: all 0.2s;
+        }
+        .btn-cek:hover { background: var(--surface-alt); color: var(--text-main); }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            padding: 16px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        /* ===== FOOTER ===== */
+.site-footer {
+    background: #1A1A2E;
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 30px 20px 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-top: 40px;
+    width: 100%;
+}
+.site-footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
+.site-footer a:hover { color: var(--primary-light); }
+    </style>
+</head>
+<body>
+
+<nav class="site-nav">
+    <div class="inner">
+        <a href="/" class="brand">
+            <div class="brand-logo"><i class="fa-solid fa-gamepad" style="color: white; font-size: 1.1rem;"></i></div>
+            <span class="brand-name">PIXIE<span>TOPUP</span></span>
+        </a>
+    </div>
+</nav>
+
+<main class="page-main">
+    <div class="status-container">
+
+        {% if status == 'PAID' or status == 'SUCCESS' %}
+        <div class="status-card">
+            <div class="status-header success">
+                <div class="status-icon-wrap"><i class="fa-solid fa-check"></i></div>
+                <div class="status-title">Pembayaran Berhasil!</div>
+                <p class="status-subtitle">Terima kasih! Pesananmu sedang diproses.<br>Item akan masuk ke akunmu dalam hitungan detik.</p>
+            </div>
+            <div class="detail-section">
+                <div class="detail-label">Nomor Invoice</div>
+                <div class="order-id-box">
+                    <div>
+                        <div class="order-id-label">Order ID</div>
+                        <div class="order-id-value">{{ order_id }}</div>
+                    </div>
+                    <span style="font-size:1.4rem"><i class="fa-solid fa-gift text-primary"></i></span>
+                </div>
+                <div class="detail-row">
+                    <span class="dk">Status Transaksi</span>
+                    <span class="dv" style="color: var(--green)"><i class="fa-solid fa-check"></i> Sukses</span>
+                </div>
+                <div class="detail-row">
+                    <span class="dk">Simpan Order ID</span>
+                    <span class="dv">Untuk lacak pesanan</span>
+                </div>
+
+                {% set sn_code = none %}
+{% set is_pln = false %}
+
+{% if trx and trx.provider_log %}
+    {% if trx.provider_log.get('sn') %}
+        {% set sn_code = trx.provider_log.get('sn') %}
+    {% elif trx.provider_log.get('data') and trx.provider_log.get('data').get('sn') %}
+        {% set sn_code = trx.provider_log.get('data').get('sn') %}
+    {% endif %}
+    
+    {% if trx.product and ('PLN' in trx.product.game_name|upper or 'TOKEN' in trx.product.game_name|upper) %}
+        {% set is_pln = true %}
+    {% endif %}
+{% endif %}
+
+{% if sn_code %}
+<div style="background-color: #FEF9C3; padding: 12px 16px; border-radius: 10px; margin-top: 15px; border: 1px dashed #D97706; display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
+    
+    <span style="color: #92400E; font-size: 0.75rem; font-weight: 800;">
+        {% if is_pln %}
+            <i class="fa-solid fa-bolt"></i> TOKEN LISTRIK PLN:
+        {% else %}
+            <i class="fa-solid fa-receipt"></i> SERIAL NUMBER (SN):
+        {% endif %}
+    </span>
+    
+    <div style="display: flex; gap: 10px; align-items: center; width: 100%;">
+        <span style="color: #D97706; font-size: 1.4rem; font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px; word-break: break-all;">{{ sn_code }}</span>
+        <button type="button" onclick="navigator.clipboard.writeText('{{ sn_code }}'); alert('{% if is_pln %}Token Listrik{% else %}Serial Number{% endif %} berhasil disalin!');" style="background: #D97706; color: white; border: none; padding: 5px 12px; border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: bold; flex-shrink: 0;"><i class="fa-solid fa-copy"></i> Salin</button>
+    </div>
+    
+    {% if is_pln %}
+        <span style="font-size: 0.7rem; color: #92400E; font-weight: 600;">*Masukkan 20 digit angka di atas ke meteran listrik kamu.</span>
+    {% else %}
+        <span style="font-size: 0.7rem; color: #92400E; font-weight: 600;">*Simpan SN ini sebagai bukti resi transaksimu.</span>
+    {% endif %}
+
+</div>
+{% endif %}
+                </div>
+            <div class="cta-section">
+                <a href="/" class="btn-home"><i class="fa-solid fa-gamepad"></i> Beli Lagi</a>
+                <a href="/cek-pesanan" class="btn-cek"><i class="fa-solid fa-magnifying-glass"></i> Cek Status Pesanan</a>
+            </div>
+        </div>
+
+        {% elif status == 'PENDING' %}
+        <div class="status-card">
+            <div class="status-header pending">
+                <div class="status-icon-wrap"><i class="fa-solid fa-hourglass-half"></i></div>
+                <div class="status-title">Menunggu Pembayaran</div>
+                <p class="status-subtitle">Selesaikan pembayaranmu di halaman Duitku.<br>Jika sudah bayar, tunggu sebentar dan refresh halaman ini.</p>
+            </div>
+            <div class="detail-section">
+                <div class="detail-label">Nomor Invoice</div>
+                <div class="order-id-box">
+                    <div>
+                        <div class="order-id-label">Order ID</div>
+                        <div class="order-id-value">{{ order_id }}</div>
+                    </div>
+                    <span style="font-size:1.4rem"><i class="fa-solid fa-hourglass-half text-warning"></i></span>
+                </div>
+                <div class="detail-row">
+                    <span class="dk">Status</span>
+                    <span class="dv" style="color: var(--yellow)"><i class="fa-solid fa-hourglass-half"></i> Pending</span>
+                </div>
+                <div class="detail-row">
+                    <span class="dk">Tindakan</span>
+                    <span class="dv">Selesaikan pembayaran</span>
+                </div>
+            </div>
+            <div class="cta-section">
+                <a href="javascript:location.reload()" class="btn-home" style="background: linear-gradient(135deg, #D97706, #B45309); box-shadow: 0 4px 14px rgba(217,119,6,0.3)"><i class="fa-solid fa-rotate"></i> Refresh Status</a>
+                <a href="/cek-pesanan" class="btn-cek"><i class="fa-solid fa-magnifying-glass"></i> Lacak Pesanan</a>
+            </div>
+        </div>
+
+        {% else %}
+        <div class="status-card">
+            <div class="status-header failed">
+                <div class="status-icon-wrap"><i class="fa-solid fa-xmark"></i></div>
+                <div class="status-title">Pesanan Gagal</div>
+                <p class="status-subtitle">Maaf, transaksi ini tidak dapat dilanjutkan<br>atau telah kedaluwarsa.</p>
+            </div>
+            <div class="detail-section">
+                <div class="detail-label">Nomor Invoice</div>
+                <div class="order-id-box">
+                    <div>
+                        <div class="order-id-label">Order ID</div>
+                        <div class="order-id-value">{{ order_id }}</div>
+                    </div>
+                    <span style="font-size:1.4rem"><i class="fa-solid fa-xmark text-danger"></i></span>
+                </div>
+                <div class="detail-row">
+                    <span class="dk">Status</span>
+                    <span class="dv" style="color: var(--red)"><i class="fa-solid fa-xmark"></i> Gagal / Dibatalkan</span>
+                </div>
+            </div>
+            <div class="cta-section">
+                <a href="/" class="btn-home"><i class="fa-solid fa-rotate-right"></i> Coba Lagi</a>
+                <a href="/cek-pesanan" class="btn-cek"><i class="fa-solid fa-magnifying-glass"></i> Cek Pesanan Lain</a>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</main>
+
+<footer class="site-footer">
+    <div class="container" style="margin-bottom: 15px; color: rgba(255,255,255,0.7); font-size: 0.85rem;">
+        <p style="margin-bottom: 5px;"><strong style="color: white;">Kontak Bantuan & Support</strong></p>
+        <p style="margin-bottom: 3px;"><i class="fa-solid fa-envelope"></i> Email: pixietopup@gmail.com</p>
+        <p style="margin-bottom: 3px;"><i class="fa-solid fa-phone"></i> Telepon / WA: 085784566377</p>
+        <p style="margin-bottom: 15px;"><i class="fa-solid fa-location-dot"></i> Alamat: Jl. Pahlawan no 124, Jember, Jawa Timur</p>
+    </div>
+    <p>© 2026 <strong style="color:rgba(255,255,255,0.8)">PixeTopup</strong> · Top Up Game Terpercaya &nbsp;|&nbsp; <a href="/cek-pesanan">Cek Pesanan</a></p>
+</footer>
+
+<script>
+    // Auto-refresh untuk halaman sukses jika status masih PENDING
+    {% if status == 'PENDING' %}
+    
+    let orderId = "{{ order_id }}";
+    
+    let cekOtomatis = setInterval(async function() {
+        try {
+            let respon = await fetch('/api/cek-status/' + orderId);
+            let data = await respon.json();
+            
+            if (data.status === "success") {
+                if (data.trx_status === 'SUCCESS' || data.trx_status === 'PAID' || data.trx_status === 'FAILED') {
+                    clearInterval(cekOtomatis);
+                    window.location.reload(); 
+                }
+            }
+        } catch (error) {
+            console.log("Menunggu respon server...");
+        }
+    }, 3000);
+    
+    {% endif %}
+</script>
+
+
+</body>
+</html>

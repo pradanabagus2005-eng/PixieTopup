@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - PixeTopup</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #F7F8FA;
+            font-family: 'Nunito', sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+        .login-card {
+            background: #FFFFFF;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 1px solid #EDEFF2;
+        }
+        .login-header {
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .login-header h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            color: #fff;
+            letter-spacing: 1.5px;
+            margin: 0;
+            font-size: 2rem;
+        }
+        .login-header h2 span { color: #E8272A; }
+        .login-body {
+            padding: 30px;
+        }
+        .form-control {
+            border: 1.5px solid #EDEFF2;
+            border-radius: 10px;
+            padding: 12px 15px;
+            font-weight: 600;
+        }
+        .form-control:focus {
+            border-color: #E8272A;
+            box-shadow: 0 0 0 3px rgba(232,39,42,0.1);
+        }
+        .btn-login {
+            background: linear-gradient(135deg, #E8272A 0%, #c0392b 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            width: 100%;
+            padding: 12px;
+            font-weight: 800;
+            margin-top: 10px;
+            transition: all 0.2s;
+        }
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(232,39,42,0.3);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <div class="login-header">
+            <i class="fa-solid fa-lock" style="color: rgba(255,255,255,0.5); font-size: 1.5rem; margin-bottom: 10px;"></i>
+            <h2>PIXIE<span>TOPUP</span></h2>
+            <p style="color: rgba(255,255,255,0.5); margin: 0; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Admin Authorization</p>
+        </div>
+        <div class="login-body">
+            {% if error_msg %}
+            <div class="alert alert-danger" style="font-size: 0.85rem; font-weight: 700; border-radius: 10px; padding: 10px 15px;">
+                <i class="fa-solid fa-triangle-exclamation"></i> {{ error_msg }}
+            </div>
+            {% endif %}
+
+            <form method="POST" action="/login">
+                <div class="mb-3">
+                    <label class="form-label" style="font-size: 0.8rem; font-weight: 700; color: #6B7280;">USERNAME</label>
+                    <input type="text" name="username" class="form-control" required placeholder="Masukkan username">
+                </div>
+                <div class="mb-4">
+                    <label class="form-label" style="font-size: 0.8rem; font-weight: 700; color: #6B7280;">PASSWORD</label>
+                    <input type="password" name="password" class="form-control" required placeholder="Masukkan password">
+                </div>
+                <button type="submit" class="btn-login"><i class="fa-solid fa-right-to-bracket"></i> Masuk Dashboard</button>
+            </form>
+            <div class="text-center mt-3">
+                <a href="/" style="font-size: 0.8rem; font-weight: 700; color: #9CA3AF; text-decoration: none;"><i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
