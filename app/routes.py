@@ -408,11 +408,26 @@ def cek_id():
         percobaan += 1
     # =======================================================
 
-    if status_digi in ['Sukses', 'Pending']:
+   if status_digi in ['Sukses', 'Pending']:
         if sn:
-            # Memotong angka ID jika format bawaan adalah "123456 / NaoAmamiya"
-            nickname_bersih = sn.split('/')[-1].strip() if '/' in sn else sn
+            # Pecah teks berdasarkan garis miring '/' dan bersihkan spasinya
+            parts = [p.strip() for p in sn.split('/')]
+            nickname_bersih = sn  # Teks bawaan jika gagal dipotong
+            
+            # Cek satu per satu potongannya
+            for part in parts:
+                # Jika ada potongan yang diawali kata "Username" (Kasus Mobile Legends)
+                if part.lower().startswith('username'):
+                    # Potong 8 huruf pertama ("Username") agar tersisa namanya saja
+                    nickname_bersih = part[8:].strip()
+                    break
+            else:
+                # Jika tidak ada kata "Username" (Kasus Free Fire: "ID / Nama")
+                if len(parts) >= 2:
+                    nickname_bersih = parts[1]  # Ambil nama yang ada di tengah/akhir
+                    
             nickname_ditemukan = nickname_bersih
+            
         elif status_digi == 'Pending':
             nickname_ditemukan = "ID Valid (Nama disembunyikan provider)"
         else:
