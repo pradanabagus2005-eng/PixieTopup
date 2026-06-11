@@ -5,8 +5,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Gunakan URL Sandbox (Testing) selama masa pengembangan
-DUITKU_API_URL = "https://api-prod.duitku.com/webapi/api/merchant/v2/inquiry"
+# Gunakan URL Production Duitku
+DUITKU_API_URL = "https://passport.duitku.com/webapi/api/merchant/v2/inquiry"
 
 def create_invoice(order_id, amount, payment_method, product_details, customer_email="tester@pixietopup.my.id", customer_phone="08123456789"):
     """Mengirim request ke Duitku untuk membuat link pembayaran"""
@@ -43,8 +43,19 @@ def create_invoice(order_id, amount, payment_method, product_details, customer_e
         "expiryPeriod": 60 
     }
 
+    # Tambahkan header agar tidak diblokir oleh sistem keamanan Duitku
+    headers = {
+        'User-Agent': 'PixieTopup-Server/1.0',
+        'Accept': 'application/json'
+    }
+
     try:
-        response = requests.post(DUITKU_API_URL, json=payload)
+        response = requests.post(DUITKU_API_URL, json=payload, headers=headers)
+        
+        # Cek jika Duitku mengembalikan error non-JSON (seperti halaman HTML pemblokiran)
+        if response.status_code != 200:
+            return {"statusCode": "99", "statusMessage": f"Duitku HTTP Error {response.status_code}: Akses ditolak server"}
+            
         return response.json()
     except Exception as e:
         return {"statusCode": "99", "statusMessage": str(e)}
