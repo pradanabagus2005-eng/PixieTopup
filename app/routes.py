@@ -363,13 +363,15 @@ def callback_digiflazz():
 
 @main.route('/api/cek-id', methods=['POST'])
 def cek_id():
+    import time  # Wajib ditambahkan agar sistem bisa melakukan 'delay'
+    
     data = request.json
     game_name = data.get('game_name')
     target_id = data.get('target_id')
 
     CHECKER_SKU = {
-        "MOBILE LEGENDS": "pre31831538",
-        "FREE FIRE": "pre31831544"
+        "MOBILE LEGENDS": "pre31831538", # Pastikan sudah diganti jika ada SKU baru
+        "FREE FIRE": "pre31831544"       # Pastikan sudah diganti jika ada SKU baru
     }
 
     sku_checker = CHECKER_SKU.get(game_name.upper())
@@ -379,24 +381,49 @@ def cek_id():
 
     ref_id = f"CEK-{uuid.uuid4().hex[:8].upper()}"
     
+    # 1. Kirim pertanyaan pertama ke server Digiflazz
     hasil = proses_topup(target_id, sku_checker, ref_id)
+    
+    status_digi = hasil.get('data', {}).get('status')
+    sn = hasil.get('data', {}).get('sn', '')
+    pesan = hasil.get('data', {}).get('message', '')
 
-    if hasil.get('data', {}).get('status') in ['Sukses', 'Pending']:
+    # =======================================================
+    # 2. SISTEM MENUNGGU (POLLING) MAKSIMAL ~10 DETIK
+    # =======================================================
+    maksimal_tunggu = 4
+    percobaan = 0
+
+    # Jika masih Pending dan Nickname (SN) belum ada, terus tanyakan!
+    while status_digi == 'Pending' and not sn and percobaan < maksimal_tunggu:
+        time.sleep(2.5)  # Berhenti sejenak 2.5 detik
+        
+        # Tanya ulang ke Digiflazz dengan nomor ref_id yang sama persis
+        hasil = proses_topup(target_id, sku_checker, ref_id) 
+        
+        status_digi = hasil.get('data', {}).get('status')
         sn = hasil.get('data', {}).get('sn', '')
         pesan = hasil.get('data', {}).get('message', '')
         
-        # --- KODE BARU: Memanipulasi pesan jika statusnya Pending ---
-        if not sn and hasil.get('data', {}).get('status') == 'Pending':
-            nickname_ditemukan = "ID Valid & Terdeteksi (Disembunyikan oleh sistem)"
+        percobaan += 1
+    # =======================================================
+
+    if status_digi in ['Sukses', 'Pending']:
+        if sn:
+            # Memotong angka ID jika format bawaan adalah "123456 / NaoAmamiya"
+            nickname_bersih = sn.split('/')[-1].strip() if '/' in sn else sn
+            nickname_ditemukan = nickname_bersih
+        elif status_digi == 'Pending':
+            nickname_ditemukan = "ID Valid (Nama disembunyikan provider)"
         else:
-            nickname_ditemukan = sn if sn else pesan
+            nickname_ditemukan = pesan
             
         return jsonify({
             "status": "success", 
             "nickname": nickname_ditemukan
         })
     else:
-        pesan_error_asli = hasil.get('data', {}).get('message', 'Terjadi kesalahan tidak diketahui di server Digiflazz.')
+        pesan_error_asli = hasil.get('data', {}).get('message', 'Terjadi kesalahan tidak diketahui.')
         return jsonify({
             "status": "error", 
             "message": f"Ditolak Digiflazz: {pesan_error_asli}"
