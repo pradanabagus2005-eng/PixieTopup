@@ -116,7 +116,7 @@
             border-radius: 16px;
             display: flex; align-items: center; justify-content: center;
             font-size: 1.6rem;
-            color: white; /* Penambahan warna putih untuk ikon */
+            color: white; 
             margin: 0 auto 14px;
             position: relative; z-index: 1;
             box-shadow: 0 4px 14px rgba(232,39,42,0.4);
@@ -217,7 +217,6 @@
             display: flex; align-items: center; justify-content: center;
             font-size: 1.3rem; flex-shrink: 0;
         }
-        /* Penyesuaian warna ikon FontAwesome di sini */
         .success .result-status-icon { background: #DCFCE7; color: var(--green); }
         .pending .result-status-icon { background: #FEF9C3; color: var(--yellow); }
         .failed  .result-status-icon { background: #FEE2E2; color: var(--red); }
@@ -263,18 +262,18 @@
         }
 
         /* ===== FOOTER ===== */
-.site-footer {
-    background: #1A1A2E;
-    color: rgba(255,255,255,0.5);
-    text-align: center;
-    padding: 30px 20px 20px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    margin-top: 40px;
-    width: 100%;
-}
-.site-footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
-.site-footer a:hover { color: var(--primary-light); }
+        .site-footer {
+            background: #1A1A2E;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            padding: 30px 20px 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin-top: 40px;
+            width: 100%;
+        }
+        .site-footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
+        .site-footer a:hover { color: var(--primary-light); }
     </style>
 </head>
 
@@ -331,30 +330,14 @@
                     <div class="result-status-msg">SUKSES — Pesanan Berhasil!</div>
                 </div>
             </div>
-
-            {% if trx.status == 'SUCCESS' or trx.status == 'PAID' %}
-        <div class="result-status success">
-            <div class="result-status-icon"><i class="fa-solid fa-check"></i></div>
-            <div class="result-status-text">
-                <div class="result-status-label">Status Top Up</div>
-                <div class="result-status-msg">SUKSES — Pesanan Berhasil!</div>
+            {% elif trx.status == 'PROCESSING' %}
+            <div class="result-status" style="background: #E0F2FE; border: 1px solid #BAE6FD;">
+                <div class="result-status-icon" style="background: #F0F9FF; color: #0284C7;"><i class="fa-solid fa-arrows-rotate fa-spin"></i></div>
+                <div class="result-status-text">
+                    <div class="result-status-label" style="color: #0369A1;">Status Top Up</div>
+                    <div class="result-status-msg" style="color: #0284C7;">PROCESSING — Sedang Dikirim</div>
+                </div>
             </div>
-        </div>
-        
-        {% elif trx.status == 'PROCESSING' %}
-        <div class="result-status" style="background: #E0F2FE; border: 1px solid #BAE6FD;">
-            <div class="result-status-icon" style="background: #F0F9FF; color: #0284C7;"><i class="fa-solid fa-arrows-rotate fa-spin"></i></div>
-            <div class="result-status-text">
-                <div class="result-status-label" style="color: #0369A1;">Status Top Up</div>
-                <div class="result-status-msg" style="color: #0284C7;">PROCESSING — Sedang Dikirim</div>
-            </div>
-        </div>
-        {% elif trx.status == 'PENDING' %}
-        <div class="result-status pending">
-            ```
-
-Setelah kamu mengatur Webhook di *dashboard* Digiflazz dan melakukan *deploy* ulang pembaruan HTML tersebut ke Vercel, sistem *top up* kamu sudah 100% matang, serba otomatis, dan siap digunakan oleh pelanggan!
-            
             {% elif trx.status == 'PENDING' %}
             <div class="result-status pending">
                 <div class="result-status-icon"><i class="fa-solid fa-hourglass-half"></i></div>
@@ -445,8 +428,6 @@ Setelah kamu mengatur Webhook di *dashboard* Digiflazz dan melakukan *deploy* ul
 
 </main>
 
-</script>
-
 <footer class="site-footer">
     <div class="container" style="margin-bottom: 15px; color: rgba(255,255,255,0.7); font-size: 0.85rem;">
         <p style="margin-bottom: 5px;"><strong style="color: white;">Kontak Bantuan & Support</strong></p>
@@ -458,8 +439,8 @@ Setelah kamu mengatur Webhook di *dashboard* Digiflazz dan melakukan *deploy* ul
 </footer>
 
 <script>
-    // Hanya jalankan auto-refresh jika status pesanan saat ini masih PENDING
-    {% if trx and trx.status == 'PENDING' %}
+    // Hanya jalankan auto-refresh jika status pesanan saat ini masih PENDING atau PROCESSING
+    {% if trx and (trx.status == 'PENDING' or trx.status == 'PROCESSING') %}
     
     let orderId = "{{ trx.order_id }}";
     
@@ -482,7 +463,7 @@ Setelah kamu mengatur Webhook di *dashboard* Digiflazz dan melakukan *deploy* ul
     }, 3000);
     
     {% endif %}
-
+</script>
 
 </body>
 </html>
