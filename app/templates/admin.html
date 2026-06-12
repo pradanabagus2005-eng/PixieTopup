@@ -438,6 +438,9 @@
                                         <span class="status-pill pending">Pending</span>
                                     {% elif trx.status == 'MANUAL' %}
                                         <span class="status-pill manual">Perlu Manual</span>
+                                        <div style="font-size: 0.75rem; color: #DC2626; margin-top: 6px; font-weight: 700;">
+                                            Info: {{ trx.provider_log.get('data', {}).get('message', 'Error tidak terbaca') if trx.provider_log else 'Tidak ada log' }}
+                                        </div>
                                     {% else %}
                                         <span class="status-pill failed">Gagal</span>
                                     {% endif %}
