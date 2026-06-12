@@ -286,7 +286,7 @@ def checkout():
         })
 
 @main.route('/api/callback/duitku', methods=['POST'])
-@verify_duitku_ip 
+#@verify_duitku_ip 
 def callback_duitku():
     data = request.form if request.form else request.json
     if not data:
