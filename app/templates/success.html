@@ -227,18 +227,18 @@
         }
 
         /* ===== FOOTER ===== */
-.site-footer {
-    background: #1A1A2E;
-    color: rgba(255,255,255,0.5);
-    text-align: center;
-    padding: 30px 20px 20px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    margin-top: 40px;
-    width: 100%;
-}
-.site-footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
-.site-footer a:hover { color: var(--primary-light); }
+        .site-footer {
+            background: #1A1A2E;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            padding: 30px 20px 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin-top: 40px;
+            width: 100%;
+        }
+        .site-footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
+        .site-footer a:hover { color: var(--primary-light); }
     </style>
 </head>
 <body>
@@ -326,6 +326,39 @@
             </div>
         </div>
 
+        {% elif status == 'PROCESSING' %}
+        <div class="status-card">
+            <div class="status-header" style="background: #E0F2FE; border-bottom: 1px solid #BAE6FD;">
+                <div class="status-icon-wrap" style="background: #F0F9FF; border: 2px solid #7DD3FC; color: #0284C7;">
+                    <i class="fa-solid fa-arrows-rotate fa-spin"></i>
+                </div>
+                <div class="status-title" style="color: #0284C7;">Sedang Diproses</div>
+                <p class="status-subtitle" style="color: #0369A1;">Pembayaran berhasil diterima.<br>Item sedang dikirim ke akunmu dalam hitungan detik.</p>
+            </div>
+            <div class="detail-section">
+                <div class="detail-label">Nomor Invoice</div>
+                <div class="order-id-box">
+                    <div>
+                        <div class="order-id-label">Order ID</div>
+                        <div class="order-id-value">{{ order_id }}</div>
+                    </div>
+                    <span style="font-size:1.4rem"><i class="fa-solid fa-arrows-rotate fa-spin" style="color: #0284C7;"></i></span>
+                </div>
+                <div class="detail-row">
+                    <span class="dk">Status</span>
+                    <span class="dv" style="color: #0284C7"><i class="fa-solid fa-arrows-rotate fa-spin"></i> Processing</span>
+                </div>
+                <div class="detail-row">
+                    <span class="dk">Tindakan</span>
+                    <span class="dv">Tunggu sebentar...</span>
+                </div>
+            </div>
+            <div class="cta-section">
+                <a href="javascript:location.reload()" class="btn-home" style="background: linear-gradient(135deg, #0284C7, #0369A1); box-shadow: 0 4px 14px rgba(2,132,199,0.3)"><i class="fa-solid fa-rotate"></i> Refresh Status</a>
+                <a href="/cek-pesanan" class="btn-cek"><i class="fa-solid fa-magnifying-glass"></i> Lacak Pesanan Lain</a>
+            </div>
+        </div>
+
         {% elif status == 'PENDING' %}
         <div class="status-card">
             <div class="status-header pending">
@@ -399,8 +432,8 @@
 </footer>
 
 <script>
-    // Auto-refresh untuk halaman sukses jika status masih PENDING
-    {% if status == 'PENDING' %}
+    // Auto-refresh untuk halaman sukses jika status masih PENDING atau PROCESSING
+    {% if status == 'PENDING' or status == 'PROCESSING' %}
     
     let orderId = "{{ order_id }}";
     
@@ -410,6 +443,7 @@
             let data = await respon.json();
             
             if (data.status === "success") {
+                // Berhenti me-refresh jika status sudah bukan PENDING atau PROCESSING lagi
                 if (data.trx_status === 'SUCCESS' || data.trx_status === 'PAID' || data.trx_status === 'FAILED') {
                     clearInterval(cekOtomatis);
                     window.location.reload(); 
@@ -422,7 +456,6 @@
     
     {% endif %}
 </script>
-
 
 </body>
 </html>
